@@ -168,6 +168,25 @@
       letter-spacing: 2px;
       margin-top: 4px;
     }
+
+    #header-block {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    #header-text {
+      flex: 1;
+    }
+
+    #avatar {
+      width: 90px;
+      height: 90px;
+      object-fit: contain;
+      border: 1px solid #cccccc;
+      background: #fafaf8;
+      flex-shrink: 0;
+    }
   </style>
 </head>
 <body>
@@ -175,14 +194,19 @@
 <div id="wrapper">
 
   <!-- ===== HEADER ===== -->
-  <h1>Tianzhu (Cy) Xie</h1>
-  <div class="header-contact">
-    929-699-3861 &nbsp;|&nbsp;
-    <a href="mailto:ctrom0604@gmail.com">ctrom0604@gmail.com</a>
-    &nbsp;|&nbsp;
-    <a href="https://huggingface.co/xTronz" target="_blank">HuggingFace</a>
-    &nbsp;|&nbsp;
-    <a href="https://github.com/xTronzZ" target="_blank">GitHub</a>
+  <div id="header-block">
+    <img id="avatar" src="avatar.png" alt="Tianzhu (Cy) Xie">
+    <div id="header-text">
+      <h1>Tianzhu (Cy) Xie</h1>
+      <div class="header-contact">
+        929-699-3861 &nbsp;|&nbsp;
+        <a href="mailto:ctrom0604@gmail.com">ctrom0604@gmail.com</a>
+        &nbsp;|&nbsp;
+        <a href="https://huggingface.co/xTronz" target="_blank">HuggingFace</a>
+        &nbsp;|&nbsp;
+        <a href="https://github.com/xTronzZ" target="_blank">GitHub</a>
+      </div>
+    </div>
   </div>
 
   <div class="nav">
