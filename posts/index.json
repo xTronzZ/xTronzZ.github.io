@@ -1,0 +1,9 @@
+[
+  {
+    "slug": "hello-world",
+    "title": "Hello, world",
+    "date": "2026-05-22",
+    "tags": ["meta"],
+    "excerpt": "A first note about why I started this blog and what I plan to write about."
+  }
+]

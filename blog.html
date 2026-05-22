@@ -1,0 +1,202 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="author" content="Tianzhu (Cy) Xie">
+  <title>Blog -- Tianzhu (Cy) Xie</title>
+  <link rel="stylesheet" href="blog-style.css">
+</head>
+<body>
+
+<div id="wrapper">
+
+  <h1>Blog</h1>
+  <div class="header-contact" style="font-size:13px; margin: 0 0 8px 0;">
+    Notes, write-ups, and short essays. Drafts live in your browser; published posts live in the repo.
+  </div>
+
+  <div class="nav">
+    [&nbsp;<a href="index.html">&laquo; Home</a>&nbsp;]
+    [&nbsp;<a href="editor.html">+ New Post</a>&nbsp;]
+  </div>
+
+  <hr>
+
+  <div class="tab-bar">
+    <button class="tab active" data-tab="published" id="tab-published">
+      Published <span class="count" id="count-published">0</span>
+    </button>
+    <button class="tab" data-tab="drafts" id="tab-drafts">
+      Drafts <span class="count" id="count-drafts">0</span>
+    </button>
+  </div>
+
+  <div class="action-row">
+    <a class="btn primary" href="editor.html">+ New Post</a>
+    <a class="btn" href="#" id="refresh-btn">Refresh</a>
+    <span id="loading-state" style="margin-left:8px; color:#777; font-style:italic;"></span>
+  </div>
+
+  <!-- Published pane -->
+  <div id="pane-published">
+    <table class="post-table" id="published-table" style="display:none;">
+      <tbody id="published-body"></tbody>
+    </table>
+    <div class="empty-state" id="published-empty" style="display:none;">
+      No posts published yet. Write something in the
+      <a href="editor.html">editor</a>.
+    </div>
+  </div>
+
+  <!-- Drafts pane -->
+  <div id="pane-drafts" style="display:none;">
+    <table class="post-table" id="drafts-table" style="display:none;">
+      <tbody id="drafts-body"></tbody>
+    </table>
+    <div class="empty-state" id="drafts-empty" style="display:none;">
+      No drafts saved locally. Start writing in the
+      <a href="editor.html">editor</a> &mdash; everything is auto-saved to your browser.
+    </div>
+  </div>
+
+  <div id="footer">
+    Drafts are stored in <code>localStorage</code> on this device only.
+    Published posts are committed to <code>posts/</code> in the GitHub repo.
+    &nbsp;&middot;&nbsp;
+    <a href="index.html">Back to Home</a>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+<script src="js/blog-core.js"></script>
+<script>
+(function () {
+  const tabs = document.querySelectorAll('.tab');
+  tabs.forEach(t => t.addEventListener('click', () => switchTab(t.dataset.tab)));
+
+  function switchTab(name) {
+    tabs.forEach(t => t.classList.toggle('active', t.dataset.tab === name));
+    document.getElementById('pane-published').style.display = name === 'published' ? '' : 'none';
+    document.getElementById('pane-drafts').style.display = name === 'drafts' ? '' : 'none';
+  }
+
+  function fmtDate(iso) {
+    if (!iso) return '';
+    const d = new Date(iso);
+    if (isNaN(d)) return iso;
+    return d.toISOString().slice(0, 10);
+  }
+
+  function escapeHTML(s) {
+    return String(s || '').replace(/[&<>"']/g, c => (
+      { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+    ));
+  }
+
+  function excerpt(md, n) {
+    if (!md) return '';
+    // strip front-matter and markdown punctuation roughly
+    const stripped = md
+      .replace(/^---[\s\S]*?---\s*/m, '')
+      .replace(/^#.*$/gm, '')
+      .replace(/[`*_>#\[\]\(\)!]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+    return stripped.length > n ? stripped.slice(0, n) + '…' : stripped;
+  }
+
+  async function renderPublished() {
+    const tbody = document.getElementById('published-body');
+    const table = document.getElementById('published-table');
+    const empty = document.getElementById('published-empty');
+    const status = document.getElementById('loading-state');
+    status.textContent = 'Loading published posts…';
+
+    let posts = [];
+    try {
+      posts = await BlogCore.fetchPublishedIndex();
+    } catch (e) {
+      status.textContent = 'Could not load published index: ' + e.message;
+      return;
+    }
+
+    status.textContent = '';
+    document.getElementById('count-published').textContent = posts.length;
+
+    if (!posts.length) {
+      table.style.display = 'none';
+      empty.style.display = '';
+      return;
+    }
+    empty.style.display = 'none';
+    table.style.display = '';
+    tbody.innerHTML = posts.map(p => `
+      <tr>
+        <td class="col-date">${escapeHTML(fmtDate(p.date))}</td>
+        <td class="col-title">
+          <a href="post.html?slug=${encodeURIComponent(p.slug)}">${escapeHTML(p.title || p.slug)}</a>
+          <span class="col-excerpt">${escapeHTML(p.excerpt || '')}</span>
+        </td>
+        <td class="col-actions">
+          <a class="btn small" href="editor.html?edit=${encodeURIComponent(p.slug)}">edit</a>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  function renderDrafts() {
+    const drafts = BlogCore.listDrafts();
+    const tbody = document.getElementById('drafts-body');
+    const table = document.getElementById('drafts-table');
+    const empty = document.getElementById('drafts-empty');
+    document.getElementById('count-drafts').textContent = drafts.length;
+
+    if (!drafts.length) {
+      table.style.display = 'none';
+      empty.style.display = '';
+      return;
+    }
+    empty.style.display = 'none';
+    table.style.display = '';
+    tbody.innerHTML = drafts
+      .sort((a, b) => (b.updatedAt || '').localeCompare(a.updatedAt || ''))
+      .map(d => `
+        <tr>
+          <td class="col-date">${escapeHTML(fmtDate(d.updatedAt))}</td>
+          <td class="col-title">
+            <a href="editor.html?draft=${encodeURIComponent(d.id)}">${escapeHTML(d.title || '(untitled)')}</a>
+            <span class="col-excerpt">${escapeHTML(excerpt(d.content, 140))}</span>
+          </td>
+          <td class="col-actions">
+            <a class="btn small" href="editor.html?draft=${encodeURIComponent(d.id)}">edit</a>
+            <a class="btn small danger" href="#" data-del="${encodeURIComponent(d.id)}">del</a>
+          </td>
+        </tr>
+      `).join('');
+
+    tbody.querySelectorAll('[data-del]').forEach(a => {
+      a.addEventListener('click', (ev) => {
+        ev.preventDefault();
+        const id = decodeURIComponent(a.getAttribute('data-del'));
+        if (confirm('Delete this draft? This cannot be undone.')) {
+          BlogCore.deleteDraft(id);
+          renderDrafts();
+        }
+      });
+    });
+  }
+
+  document.getElementById('refresh-btn').addEventListener('click', (e) => {
+    e.preventDefault();
+    renderPublished();
+    renderDrafts();
+  });
+
+  renderPublished();
+  renderDrafts();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,477 @@
+/* ============================================================
+   Shared styles for blog.html / editor.html / post.html
+   Matches the Times New Roman / academic-homepage aesthetic
+   used by index.html.
+   ============================================================ */
+
+body {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 14px;
+  background-color: #ffffff;
+  color: #000000;
+  margin: 0;
+  padding: 0;
+}
+
+#wrapper {
+  width: 680px;
+  margin: 30px auto;
+  padding: 0 10px;
+}
+
+#wrapper.wide {
+  width: 920px;
+}
+
+h1 {
+  font-size: 22px;
+  font-weight: bold;
+  margin: 0 0 2px 0;
+  letter-spacing: 1px;
+}
+
+h2 {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 18px 0 4px 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 1px solid #000000;
+  padding-bottom: 2px;
+}
+
+a:link    { color: #000099; }
+a:visited { color: #551a8b; }
+a:hover   { color: #cc0000; text-decoration: underline; }
+a:active  { color: #cc0000; }
+
+hr {
+  border: none;
+  border-top: 1px solid #aaaaaa;
+  margin: 6px 0 14px 0;
+}
+
+.nav {
+  margin: 10px 0 6px 0;
+  font-size: 13px;
+}
+
+.nav a {
+  margin-right: 12px;
+  text-decoration: none;
+}
+
+.nav a:hover { text-decoration: underline; }
+
+#footer {
+  margin-top: 24px;
+  font-size: 11px;
+  color: #666666;
+  text-align: center;
+  border-top: 1px solid #cccccc;
+  padding-top: 8px;
+}
+
+/* ============================================================
+   Blog list (blog.html)
+   ============================================================ */
+
+.tab-bar {
+  margin: 4px 0 10px 0;
+  font-size: 13px;
+}
+
+.tab-bar .tab {
+  display: inline-block;
+  padding: 4px 10px;
+  margin-right: 4px;
+  border: 1px solid #888888;
+  background: #f4f4f0;
+  color: #000000;
+  text-decoration: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+}
+
+.tab-bar .tab:hover { background: #eaeae0; text-decoration: none; }
+
+.tab-bar .tab.active {
+  background: #ffffff;
+  border-bottom: 1px solid #ffffff;
+  font-weight: bold;
+}
+
+.tab-bar .tab .count {
+  display: inline-block;
+  margin-left: 4px;
+  background: #ddddd0;
+  color: #333333;
+  font-size: 11px;
+  padding: 0 4px;
+  border-radius: 2px;
+}
+
+.action-row {
+  margin: 8px 0 12px 0;
+  font-size: 13px;
+}
+
+.post-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.post-table td {
+  padding: 6px 4px;
+  border-bottom: 1px dotted #cccccc;
+  vertical-align: top;
+}
+
+.post-table .col-date {
+  width: 95px;
+  color: #555555;
+  font-style: italic;
+  white-space: nowrap;
+}
+
+.post-table .col-title a {
+  font-weight: bold;
+}
+
+.post-table .col-excerpt {
+  color: #555555;
+  display: block;
+  margin-top: 2px;
+}
+
+.post-table .col-actions {
+  width: 1px;
+  white-space: nowrap;
+}
+
+.empty-state {
+  border: 1px dashed #bbbbbb;
+  padding: 24px 16px;
+  text-align: center;
+  color: #777777;
+  font-style: italic;
+  margin: 8px 0;
+}
+
+/* Buttons (use anchor tags styled like 1990s buttons) */
+.btn {
+  display: inline-block;
+  padding: 3px 10px;
+  border: 1px solid #888888;
+  background: #f4f4f0;
+  color: #000000;
+  text-decoration: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+}
+
+.btn:hover { background: #eaeae0; text-decoration: none; color: #000000; }
+
+.btn:disabled { color: #999999; cursor: not-allowed; background: #f4f4f0; }
+
+.btn.primary {
+  background: #000080;
+  color: #ffffff;
+  border-color: #000080;
+}
+
+.btn.primary:hover { background: #0a0aa0; color: #ffffff; }
+
+.btn.danger { border-color: #aa0000; color: #aa0000; }
+.btn.danger:hover { background: #fbeaea; color: #aa0000; }
+
+.btn.small { font-size: 11px; padding: 1px 6px; }
+
+/* ============================================================
+   Editor (editor.html)
+   ============================================================ */
+
+.editor-toolbar {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 6px 0 12px 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #cccccc;
+  font-size: 13px;
+}
+
+.editor-toolbar .spacer { flex: 1; }
+
+.editor-status {
+  font-size: 12px;
+  color: #777777;
+  font-style: italic;
+}
+
+.title-input {
+  width: 100%;
+  font-family: inherit;
+  font-size: 22px;
+  font-weight: bold;
+  border: 0;
+  border-bottom: 1px solid #cccccc;
+  padding: 4px 0;
+  margin-bottom: 6px;
+  outline: none;
+  background: transparent;
+}
+
+.title-input:focus { border-bottom-color: #000000; }
+
+.meta-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 6px 0 10px 0;
+  font-size: 13px;
+}
+
+.meta-row label {
+  color: #444444;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.meta-row input[type="text"] {
+  font-family: inherit;
+  font-size: 13px;
+  padding: 2px 6px;
+  border: 1px solid #cccccc;
+  background: #ffffff;
+  outline: none;
+}
+
+.editor-pane {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  min-height: 60vh;
+}
+
+@media (max-width: 720px) {
+  .editor-pane { grid-template-columns: 1fr; }
+  #wrapper.wide { width: auto; }
+}
+
+.editor-pane textarea {
+  width: 100%;
+  min-height: 60vh;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  padding: 10px;
+  border: 1px solid #cccccc;
+  background: #fbfbf7;
+  outline: none;
+  resize: vertical;
+}
+
+.editor-pane textarea:focus { border-color: #000000; }
+
+.preview-pane {
+  border: 1px solid #cccccc;
+  padding: 10px 14px;
+  background: #ffffff;
+  overflow-y: auto;
+  min-height: 60vh;
+  font-size: 14px;
+}
+
+/* ============================================================
+   Modal (token entry)
+   ============================================================ */
+
+.modal-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 50;
+}
+
+.modal {
+  background: #ffffff;
+  width: 460px;
+  max-width: 92vw;
+  border: 1px solid #888888;
+  padding: 16px 20px;
+  font-size: 13px;
+}
+
+.modal h3 {
+  margin: 0 0 6px 0;
+  font-size: 15px;
+  font-weight: bold;
+  border-bottom: 1px solid #000000;
+  padding-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.modal label {
+  display: block;
+  margin: 8px 0 3px 0;
+  color: #333333;
+}
+
+.modal input[type="text"],
+.modal input[type="password"] {
+  width: 100%;
+  font-family: inherit;
+  font-size: 13px;
+  padding: 4px 6px;
+  border: 1px solid #cccccc;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+.help-text {
+  font-size: 11px;
+  color: #777777;
+  margin-top: 4px;
+  line-height: 1.45;
+}
+
+/* ============================================================
+   Markdown rendered body (post.html + editor preview)
+   ============================================================ */
+
+.markdown-body {
+  font-family: "Times New Roman", Times, serif;
+  font-size: 14px;
+  line-height: 1.55;
+  color: #000000;
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4 {
+  font-weight: bold;
+  margin: 1.2em 0 0.4em 0;
+  line-height: 1.25;
+  letter-spacing: 0;
+  text-transform: none;
+  border: 0;
+  padding: 0;
+}
+
+.markdown-body h1 { font-size: 20px; }
+.markdown-body h2 {
+  font-size: 16px;
+  border-bottom: 1px solid #dddddd;
+  padding-bottom: 2px;
+}
+.markdown-body h3 { font-size: 14px; }
+
+.markdown-body p { margin: 0.6em 0; }
+
+.markdown-body ul, .markdown-body ol {
+  margin: 0.4em 0 0.6em 1.4em;
+  padding: 0;
+}
+.markdown-body li { margin-bottom: 2px; }
+
+.markdown-body blockquote {
+  border-left: 3px solid #cccccc;
+  margin: 0.6em 0;
+  padding: 2px 10px;
+  color: #555555;
+  background: #faf8f1;
+  font-style: italic;
+}
+
+.markdown-body code {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.92em;
+  background: #f1f1ec;
+  padding: 1px 4px;
+  border-radius: 2px;
+}
+
+.markdown-body pre {
+  background: #1d1d1b;
+  color: #f3f3ed;
+  padding: 10px 12px;
+  border-radius: 4px;
+  overflow-x: auto;
+  font-size: 12px;
+  line-height: 1.45;
+  font-family: "Courier New", Courier, monospace;
+}
+
+.markdown-body pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+}
+
+.markdown-body table {
+  border-collapse: collapse;
+  margin: 0.6em 0;
+}
+.markdown-body th, .markdown-body td {
+  border: 1px solid #cccccc;
+  padding: 4px 8px;
+  text-align: left;
+  font-size: 13px;
+}
+.markdown-body th { background: #f4f4ec; }
+
+.markdown-body img { max-width: 100%; height: auto; }
+
+.markdown-body a:link    { color: #000099; }
+.markdown-body a:visited { color: #551a8b; }
+.markdown-body a:hover   { color: #cc0000; }
+
+/* ============================================================
+   Post page
+   ============================================================ */
+
+.post-header {
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #cccccc;
+}
+
+.post-header h1 {
+  font-size: 22px;
+  margin: 0 0 4px 0;
+  letter-spacing: 0;
+}
+
+.post-meta-line {
+  color: #777777;
+  font-size: 12px;
+  font-style: italic;
+}
+
+.tag-chip {
+  display: inline-block;
+  font-size: 11px;
+  background: #f1f1ec;
+  border: 1px solid #cccccc;
+  padding: 0 5px;
+  border-radius: 2px;
+  margin-right: 3px;
+  color: #444444;
+  font-style: normal;
+}

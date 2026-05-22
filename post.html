@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="author" content="Tianzhu (Cy) Xie">
+  <title>Post -- Tianzhu (Cy) Xie</title>
+  <link rel="stylesheet" href="blog-style.css">
+</head>
+<body>
+
+<div id="wrapper">
+
+  <div class="nav">
+    [&nbsp;<a href="index.html">&laquo; Home</a>&nbsp;]
+    [&nbsp;<a href="blog.html">All Posts</a>&nbsp;]
+    [&nbsp;<a href="#" id="edit-link" style="display:none;">Edit</a>&nbsp;]
+  </div>
+
+  <hr>
+
+  <div id="loading">Loading…</div>
+
+  <article id="post-article" style="display:none;">
+    <div class="post-header">
+      <h1 id="post-title"></h1>
+      <div class="post-meta-line">
+        <span id="post-date"></span>
+        <span id="post-tags"></span>
+      </div>
+    </div>
+    <div id="post-body" class="markdown-body"></div>
+  </article>
+
+  <div id="error" style="display:none;" class="empty-state"></div>
+
+  <div id="footer">
+    Tianzhu (Cy) Xie &nbsp;&middot;&nbsp;
+    <a href="blog.html">Blog</a> &nbsp;&middot;&nbsp;
+    <a href="index.html">Home</a>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+<script src="js/blog-core.js"></script>
+<script>
+(function () {
+  const params = new URLSearchParams(location.search);
+  const slug = params.get('slug');
+
+  const loading = document.getElementById('loading');
+  const article = document.getElementById('post-article');
+  const err = document.getElementById('error');
+
+  function showError(msg) {
+    loading.style.display = 'none';
+    err.style.display = '';
+    err.textContent = msg;
+  }
+
+  if (!slug) {
+    showError('No post specified.');
+    return;
+  }
+
+  fetch('posts/' + encodeURIComponent(slug) + '.md', { cache: 'no-store' })
+    .then(r => {
+      if (!r.ok) throw new Error('Post not found (HTTP ' + r.status + ')');
+      return r.text();
+    })
+    .then(text => {
+      const parsed = BlogCore.parseFrontMatter(text);
+      document.title = (parsed.meta.title || slug) + ' -- Tianzhu (Cy) Xie';
+      document.getElementById('post-title').textContent = parsed.meta.title || slug;
+
+      const date = parsed.meta.date || '';
+      const tags = parsed.meta.tags || [];
+      const tagHTML = (Array.isArray(tags) ? tags : String(tags).split(','))
+        .map(t => t.trim()).filter(Boolean)
+        .map(t => `<span class="tag-chip">${BlogCore.escapeHTML(t)}</span>`).join(' ');
+      document.getElementById('post-date').textContent = date ? date : '';
+      document.getElementById('post-tags').innerHTML = tagHTML ? ' &middot; ' + tagHTML : '';
+
+      document.getElementById('post-body').innerHTML = BlogCore.renderMarkdown(parsed.body);
+
+      const editLink = document.getElementById('edit-link');
+      editLink.href = 'editor.html?edit=' + encodeURIComponent(slug);
+      editLink.style.display = '';
+
+      loading.style.display = 'none';
+      article.style.display = '';
+    })
+    .catch(e => showError('Could not load post: ' + e.message));
+})();
+</script>
+</body>
+</html>

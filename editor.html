@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="author" content="Tianzhu (Cy) Xie">
+  <title>Editor -- Tianzhu (Cy) Xie</title>
+  <link rel="stylesheet" href="blog-style.css">
+</head>
+<body>
+
+<div id="wrapper" class="wide">
+
+  <div class="nav">
+    [&nbsp;<a href="index.html">&laquo; Home</a>&nbsp;]
+    [&nbsp;<a href="blog.html">All Posts</a>&nbsp;]
+  </div>
+
+  <input id="title" class="title-input" type="text" placeholder="Post title (e.g. Notes on Lean 4 tactics)" autocomplete="off">
+
+  <div class="meta-row">
+    <label>
+      Slug:
+      <input id="slug" type="text" placeholder="auto-from-title" style="width:200px;">
+    </label>
+    <label>
+      Tags:
+      <input id="tags" type="text" placeholder="comma,separated" style="width:200px;">
+    </label>
+    <label>
+      Date:
+      <input id="date" type="text" placeholder="YYYY-MM-DD" style="width:120px;">
+    </label>
+  </div>
+
+  <div class="editor-toolbar">
+    <button class="btn" id="btn-save-draft">Save draft</button>
+    <button class="btn primary" id="btn-publish">Publish to GitHub</button>
+    <button class="btn" id="btn-toggle-preview">Toggle preview</button>
+    <button class="btn danger" id="btn-delete">Delete draft</button>
+    <span class="spacer"></span>
+    <span class="editor-status" id="status-text">Ready.</span>
+  </div>
+
+  <div class="editor-pane" id="editor-pane">
+    <textarea id="content" placeholder="Write in Markdown. Drafts auto-save every few seconds to your browser."></textarea>
+    <div class="preview-pane markdown-body" id="preview"></div>
+  </div>
+
+  <div id="footer">
+    Drafts are stored only on this device (localStorage).
+    Publishing commits a <code>.md</code> file to <code>posts/</code> in your GitHub repo.
+    &nbsp;&middot;&nbsp;
+    <a href="blog.html">Back to Blog</a>
+  </div>
+
+</div>
+
+<!-- Token modal -->
+<div class="modal-backdrop" id="token-modal" style="display:none;">
+  <div class="modal">
+    <h3>GitHub Access</h3>
+    <p style="margin:6px 0;">
+      Publishing requires a GitHub <b>Personal Access Token</b> with <code>contents:write</code>
+      on this repository. The token is stored in this browser only (localStorage) and never sent
+      anywhere except <code>api.github.com</code>.
+    </p>
+    <label for="token-input">Personal Access Token</label>
+    <input id="token-input" type="password" placeholder="github_pat_...">
+    <p class="help-text">
+      Create a fine-grained token at
+      <a href="https://github.com/settings/personal-access-tokens" target="_blank">github.com/settings/personal-access-tokens</a>:
+      access <i>xTronzZ.github.io</i>, repository permission <b>Contents: Read &amp; write</b>.
+    </p>
+    <div class="modal-actions">
+      <button class="btn" id="token-cancel">Cancel</button>
+      <button class="btn primary" id="token-save">Save &amp; Publish</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+<script src="js/blog-core.js"></script>
+<script src="js/editor.js"></script>
+</body>
+</html>
