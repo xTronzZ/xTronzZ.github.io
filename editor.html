@@ -37,6 +37,7 @@
     <button class="btn" id="btn-save-draft">Save draft</button>
     <button class="btn primary" id="btn-publish">Publish to GitHub</button>
     <button class="btn" id="btn-toggle-preview">Toggle preview</button>
+    <button class="btn" id="btn-token" title="Change or clear the saved GitHub token">Token</button>
     <button class="btn danger" id="btn-delete">Delete draft</button>
     <span class="spacer"></span>
     <span class="editor-status" id="status-text">Ready.</span>
@@ -73,8 +74,10 @@
       access <i>xTronzZ.github.io</i>, repository permission <b>Contents: Read &amp; write</b>.
     </p>
     <div class="modal-actions">
+      <button class="btn danger" id="token-clear" title="Remove saved token from this browser">Clear saved</button>
+      <span class="spacer" style="flex:1;"></span>
       <button class="btn" id="token-cancel">Cancel</button>
-      <button class="btn primary" id="token-save">Save &amp; Publish</button>
+      <button class="btn primary" id="token-save">Save</button>
     </div>
   </div>
 </div>

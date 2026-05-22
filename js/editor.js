@@ -127,10 +127,17 @@
   }
 
   // -------------------- Publish ---------------------------------------
-  function openTokenModal() {
+  // tokenModalContext: 'publish' (opened because publish needed a token) or
+  // 'manage' (user clicked Token button just to view / change / clear)
+  let tokenModalContext = 'manage';
+
+  function openTokenModal(context) {
+    tokenModalContext = context || 'manage';
     const modal = document.getElementById('token-modal');
     const input = document.getElementById('token-input');
     input.value = BlogCore.getToken() || '';
+    document.getElementById('token-save').textContent =
+      tokenModalContext === 'publish' ? 'Save & Publish' : 'Save';
     modal.style.display = '';
     input.focus();
   }
@@ -144,7 +151,7 @@
     if (!state.slug)  state.slug = BlogCore.slugify(state.title);
 
     const token = BlogCore.getToken();
-    if (!token) { openTokenModal(); return; }
+    if (!token) { openTokenModal('publish'); return; }
 
     saveDraftNow(true);
     setStatus('Publishing to GitHub…');
@@ -169,8 +176,25 @@
       }
     } catch (e) {
       console.error(e);
-      setStatus('Publish failed: ' + e.message);
-      alert('Publish failed:\n' + e.message);
+      // Auto-prompt for a new token if the token was rejected
+      const msg = String(e && e.message || e);
+      const looksLikeAuth = /HTTP\s4(0[13]|22)\b/.test(msg) ||
+        /Bad credentials/i.test(msg) ||
+        /not accessible by personal access token/i.test(msg) ||
+        /Requires authentication/i.test(msg);
+      if (looksLikeAuth) {
+        BlogCore.clearToken();
+        setStatus('Token rejected by GitHub. Please paste a new token.');
+        alert(
+          'GitHub rejected the token (likely 403 / wrong permissions).\n\n' +
+          'The saved token has been cleared. Please paste a fresh fine-grained PAT with\n' +
+          'Repository: xTronzZ.github.io, Permissions > Contents: Read and write.'
+        );
+        openTokenModal('publish');
+        return;
+      }
+      setStatus('Publish failed: ' + msg);
+      alert('Publish failed:\n' + msg);
     }
   }
 
@@ -218,8 +242,22 @@
     location.href = 'blog.html';
   });
 
+  document.getElementById('btn-token').addEventListener('click', (e) => {
+    e.preventDefault();
+    openTokenModal('manage');
+  });
+
   document.getElementById('token-cancel').addEventListener('click', (e) => {
     e.preventDefault();
+    closeTokenModal();
+  });
+
+  document.getElementById('token-clear').addEventListener('click', (e) => {
+    e.preventDefault();
+    if (!confirm('Remove the saved GitHub token from this browser?')) return;
+    BlogCore.clearToken();
+    document.getElementById('token-input').value = '';
+    setStatus('Token cleared from this browser.');
     closeTokenModal();
   });
 
@@ -228,8 +266,12 @@
     const v = document.getElementById('token-input').value.trim();
     if (!v) { alert('Please paste a token.'); return; }
     BlogCore.setToken(v);
+    const ctx = tokenModalContext;
     closeTokenModal();
-    await doPublish();
+    setStatus('Token saved.');
+    if (ctx === 'publish') {
+      await doPublish();
+    }
   });
 
   // Warn before leaving with unsaved changes
