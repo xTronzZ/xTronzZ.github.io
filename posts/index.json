@@ -3,7 +3,9 @@
     "slug": "hello-world",
     "title": "Hello, world",
     "date": "2026-05-22",
-    "tags": ["meta"],
-    "excerpt": "A first note about why I started this blog and what I plan to write about."
+    "tags": [
+      "meta"
+    ],
+    "excerpt": "This is the first post on my new blog. I write here mostly to keep notes for myself, but feel free to follow along. - Neuro-symbolic AI and Lean 4 &mdash; bits…"
   }
 ]
